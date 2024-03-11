@@ -12,11 +12,7 @@ r = requests.get(url)
 with open("ipv4.txt", "wb") as code:
     code.write(r.content)
 
-# 获取远程频道源ipv6.txt
-url = 'https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/IPTV/main/IPTV-tvbox.txt'
-r = requests.get(url)
-with open("ipv6.txt", "wb") as code:
-    code.write(r.content)
+
 
 # 获取远程含湖南地方频道源difang.txt
 url = 'https://fanmingming.com/txt?url=https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/mgtv/main/mgtv.m3u'
@@ -24,17 +20,7 @@ r = requests.get(url)
 with open("difang.txt", "wb") as code:
     code.write(r.content)
 
-# 合并自定义频道文件内容
-file_contents = []
-file_paths = ["ipv6.txt", "difang.txt"]  # 替换为实际的文件路径列表
-for file_path in file_paths:
-    with open(file_path, 'r', encoding="utf-8") as file:
-        content = file.read()
-        file_contents.append(content)
 
-# 写入合并后的文件
-with open("ipv6.txt", "w", encoding="utf-8") as output:
-    output.write('\n'.join(file_contents))
 
 urls = [
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0iSGViZWki",                # 河 北
@@ -360,43 +346,15 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
 
-# 读取ipv6.txt文件
-results = []
-result_counter = 5  # 每个频道需要的个数
-with open("ipv6.txt", 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    for line in lines:
-        line = line.strip()
-        if line:
-            channel_name, channel_url = line.split(',', 1)
-            if 'genre' not in channel_url:
-                results.append((channel_name, channel_url))
 
 
-# 将ipv6.txt文件其余频道内容写入到IPV6频道ipv6_list.txt
-channel_counters = {}
-with open("ipv6_list.txt", 'w', encoding='utf-8') as file:
-    file.write('IPV6频道,#genre#\n')
-    for result in results:
-        channel_name, channel_url = result
-        if 'CCTV' in channel_name or '卫视' in channel_name or '凤凰' in channel_name or '重温经典' in channel_name or 'CHC' in channel_name or '求索' in channel_name or 'NewTV' in channel_name:
-            if channel_name in channel_counters:
-                if channel_counters[channel_name] >= result_counter:
-                    continue
-                else:
-                    file.write(f"{channel_name},{channel_url}\n")
-                    channel_counters[channel_name] += 1
-            else:
-                file.write(f"{channel_name},{channel_url}\n")
-                channel_counters[channel_name] = 1
-
-# 将ipv6.txt文件地方频道内容写入到hunan.txt
+# 将difang.txt文件地方频道内容写入到hunan.txt
 channel_counters = {}
 with open("hunan.txt", 'w', encoding='utf-8') as file:
     file.write('湖南频道,#genre#\n')
     for result in results:
         channel_name, channel_url = result
-        if '湖南经视' in channel_name or '湖南都市' in channel_name or '湖南爱晚' in channel_name or '湖南国际' in channel_name or '湖南娱乐' in channel_name or '湖南电影' in channel_name or '湖南电视剧' in channel_name or '金鹰' in channel_name or '长沙' in channel_name:
+        if '湖南' in channel_name or '长沙 in channel_name or '金鹰' in channel_name or '快乐垂钓' in channel_name or '先锋乒羽' in channel_name:
             if channel_name in channel_counters:
                 if channel_counters[channel_name] >= result_counter:
                     continue
@@ -524,7 +482,7 @@ with open("qita.txt", 'w', encoding='utf-8') as file:
 
 # 合并自定义频道文件内容
 file_contents = []
-file_paths = ["cctv.txt", "weishi.txt", "gangao.txt", "hunan.txt", "qita.txt", "ipv6_list.txt", "zdy.txt"]  # 替换为实际的文件路径列表
+file_paths = ["cctv.txt", "weishi.txt", "gangao.txt", "hunan.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
 for file_path in file_paths:
     with open(file_path, 'r', encoding="utf-8") as file:
         content = file.read()
@@ -539,7 +497,6 @@ with open("iptv_list.txt", "w", encoding="utf-8") as output:
 
 
 os.remove("ipv4.txt")
-os.remove("ipv6.txt")
 os.remove("difang.txt")
 os.remove("iptv.txt")
 os.remove("cctv.txt")
@@ -547,6 +504,6 @@ os.remove("weishi.txt")
 os.remove("gangao.txt")
 os.remove("hunan.txt")
 os.remove("qita.txt")
-os.remove("ipv6_list.txt")
+
 
 print("任务运行完毕，分类频道列表可查看文件夹内iptv_list.txt文件！")
