@@ -377,13 +377,14 @@ with open("difang.txt", 'r', encoding='utf-8') as file:
             channel_name, channel_url = line.split(',', 1)
             if 'genre' not in channel_url:
                 results.append((channel_name, channel_url))
+                
 # 将difang.txt文件地方频道内容写入到hunan.txt
 channel_counters = {}
 with open("hunan.txt", 'w', encoding='utf-8') as file:
     file.write('湖南频道,#genre#\n')
     for result in results:
         channel_name, channel_url = result
-        if '湖南' in channel_name or '长沙 in channel_name or '金鹰' in channel_name or '快乐垂钓' in channel_name or '先锋乒羽' in channel_name:
+        if '湖南' in channel_name or '长沙 in channel_name:
             if channel_name in channel_counters:
                 if channel_counters[channel_name] >= result_counter:
                     continue
