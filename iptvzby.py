@@ -14,14 +14,34 @@ with open("ipv4.txt", "wb") as code:
 
 
 
-# 获取远程含湖南地方频道源difang.txt
-url = 'https://fanmingming.com/txt?url=https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/mgtv/main/mgtv.m3u'
-r = requests.get(url)
-with open("difang.txt", "wb") as code:
-    code.write(r.content)
+# 获取远程湖南地方频道源，并将.m3u文件转换成.txt
+json_url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/mgtv/main/mgtv.m3u"
 
+response = requests.get(json_url)
+data = response.text
 
+lines = data.split('\n')
 
+channel_data = []
+current_name = ''
+
+for line in lines:
+    line = line.strip()
+    if line.startswith('#EXTINF'):
+        channel_info = line.split(',', 1)
+        current_name = channel_info[1] if len(channel_info) > 1 else ''
+    elif line.startswith('http'):
+        if current_name and line:
+            channel_data.append(f'{current_name},{line}')
+
+for item in channel_data:
+    print(item)
+
+with open("difang.txt", 'w', encoding='utf-8') as file:
+    for item in channel_data:
+        file.write(item + "\n")
+
+# 扫源
 urls = [
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0iSGViZWki",                # 河 北
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0iYmVpamluZyI%3D",          # 北 京
@@ -269,8 +289,7 @@ with open("iptv.txt", 'w', encoding='utf-8') as file:
         file.write(result + "\n")
         print(result)
 
-
-print("频道列表文件ipv4.txt,ipv6.txt,iptv.txt获取完成！")
+print("频道列表文件ipv4.txt,difang.txt,iptv.txt获取完成！")
 
 import os
 import re
@@ -347,7 +366,7 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
                 channel_counters[channel_name] = 1
 
 
-# 读取IPTV4.txt文件
+# 读取difang.txt文件
 results = []
 result_counter = 2  # 每个频道需要的个数
 with open("difang.txt", 'r', encoding='utf-8') as file:
@@ -355,7 +374,7 @@ with open("difang.txt", 'r', encoding='utf-8') as file:
     for line in lines:
         line = line.strip()
         if line:
-            channel_name, channel_url = line.split(',')
+            channel_name, channel_url = line.split(',', 1)
             if 'genre' not in channel_url:
                 results.append((channel_name, channel_url))
 # 将difang.txt文件地方频道内容写入到hunan.txt
