@@ -347,7 +347,17 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
                 channel_counters[channel_name] = 1
 
 
-
+# 读取IPTV4.txt文件
+results = []
+result_counter = 2  # 每个频道需要的个数
+with open("difang.txt", 'r', encoding='utf-8') as file:
+    lines = file.readlines()
+    for line in lines:
+        line = line.strip()
+        if line:
+            channel_name, channel_url = line.split(',')
+            if 'genre' not in channel_url:
+                results.append((channel_name, channel_url))
 # 将difang.txt文件地方频道内容写入到hunan.txt
 channel_counters = {}
 with open("hunan.txt", 'w', encoding='utf-8') as file:
