@@ -384,7 +384,7 @@ with open("hunan.txt", 'w', encoding='utf-8') as file:
     file.write('湖南频道,#genre#\n')
     for result in results:
         channel_name, channel_url = result
-        if '湖南' in channel_name or '长沙 in channel_name:
+        if '湖南' in channel_name or '长沙' in channel_name or '金鹰' in channel_name or '快乐' in channel_name or '先锋' in channel_name:
             if channel_name in channel_counters:
                 if channel_counters[channel_name] >= result_counter:
                     continue
