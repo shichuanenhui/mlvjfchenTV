@@ -523,8 +523,9 @@ with open("iptv_list.txt", "w", encoding="utf-8") as output:
     
 # 写入更新日期时间
     now = datetime.now()
-    output.write(f"更新日期,#genre#\n")
-    output.write(f"{now.strftime("%Y-%m-%d %H:%M:%S")},url\n")
+    output.write(f"更新时间,#genre#\n")
+    output.write(f"{now.strftime("%Y-%m-%d")},url\n")
+    output.write(f"{now.strftime("%H:%M:%S")},url\n")
 
 
 os.remove("ipv4.txt")
