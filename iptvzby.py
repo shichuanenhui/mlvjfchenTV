@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 import requests
 import re
+from datetime import datetime
 
 # 获取远程频道源ipv4.txt
 url = 'https://taoiptv.com/source/iptv.txt?token=8zlxhttq9h01ahww'
@@ -521,9 +522,11 @@ for file_path in file_paths:
 # 写入合并后的文件
 with open("iptv_list.txt", "w", encoding="utf-8") as output:
     output.write('\n'.join(file_contents))
-
-    output.write(f"更新日期,#genre#\n")
-    output.write(f"{now_today},url\n")
+    
+# 写入更新日期时间
+    now = datetime.now()
+    output.write(f"提取日期,#genre#\n")
+    output.write(now.strftime("%Y-%m-%d %H:%M:%S"))
 
 
 os.remove("ipv4.txt")
