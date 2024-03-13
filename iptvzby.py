@@ -15,32 +15,32 @@ with open("ipv4.txt", "wb") as code:
 
 
 
-# 获取远程湖南地方频道源，并将.m3u文件转换成.txt
-json_url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/mgtv/main/mgtv.m3u"
+# # 获取远程湖南地方频道源，并将.m3u文件转换成.txt
+# json_url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/mgtv/main/mgtv.m3u"
 
-response = requests.get(json_url)
-data = response.text
+# response = requests.get(json_url)
+# data = response.text
 
-lines = data.split('\n')
+# lines = data.split('\n')
 
-channel_data = []
-current_name = ''
+# channel_data = []
+# current_name = ''
 
-for line in lines:
-    line = line.strip()
-    if line.startswith('#EXTINF'):
-        channel_info = line.split(',', 1)
-        current_name = channel_info[1] if len(channel_info) > 1 else ''
-    elif line.startswith('http'):
-        if current_name and line:
-            channel_data.append(f'{current_name},{line}')
+# for line in lines:
+#     line = line.strip()
+#     if line.startswith('#EXTINF'):
+#         channel_info = line.split(',', 1)
+#         current_name = channel_info[1] if len(channel_info) > 1 else ''
+#     elif line.startswith('http'):
+#         if current_name and line:
+#             channel_data.append(f'{current_name},{line}')
 
-for item in channel_data:
-    print(item)
+# for item in channel_data:
+#     print(item)
 
-with open("difang.txt", 'w', encoding='utf-8') as file:
-    for item in channel_data:
-        file.write(item + "\n")
+# with open("difang.txt", 'w', encoding='utf-8') as file:
+#     for item in channel_data:
+#         file.write(item + "\n")
 
 # 扫源
 urls = [
@@ -349,52 +349,52 @@ with open("weishi.txt", 'w', encoding='utf-8') as file:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
 
-# 将IPV4文件内容写入到gangao.txt
-channel_counters = {}
-with open("gangao.txt", 'w', encoding='utf-8') as file:
-    file.write('港澳频道,#genre#\n')
-    for result in results:
-        channel_name, channel_url = result
-        if '凤凰' in channel_name or '翡翠' in channel_name or 'TVB' in channel_name:
-            if channel_name in channel_counters:
-                if channel_counters[channel_name] >= result_counter:
-                    continue
-                else:
-                    file.write(f"{channel_name},{channel_url}\n")
-                    channel_counters[channel_name] += 1
-            else:
-                file.write(f"{channel_name},{channel_url}\n")
-                channel_counters[channel_name] = 1
+# # 将IPV4文件内容写入到gangao.txt
+# channel_counters = {}
+# with open("gangao.txt", 'w', encoding='utf-8') as file:
+#     file.write('港澳频道,#genre#\n')
+#     for result in results:
+#         channel_name, channel_url = result
+#         if '凤凰' in channel_name or '翡翠' in channel_name or 'TVB' in channel_name:
+#             if channel_name in channel_counters:
+#                 if channel_counters[channel_name] >= result_counter:
+#                     continue
+#                 else:
+#                     file.write(f"{channel_name},{channel_url}\n")
+#                     channel_counters[channel_name] += 1
+#             else:
+#                 file.write(f"{channel_name},{channel_url}\n")
+#                 channel_counters[channel_name] = 1
 
 
-# 读取difang.txt文件
-results = []
-result_counter = 2  # 每个频道需要的个数
-with open("difang.txt", 'r', encoding='utf-8') as file:
-    lines = file.readlines()
-    for line in lines:
-        line = line.strip()
-        if line:
-            channel_name, channel_url = line.split(',', 1)
-            if 'genre' not in channel_url:
-                results.append((channel_name, channel_url))
+# # 读取difang.txt文件
+# results = []
+# result_counter = 2  # 每个频道需要的个数
+# with open("difang.txt", 'r', encoding='utf-8') as file:
+#     lines = file.readlines()
+#     for line in lines:
+#         line = line.strip()
+#         if line:
+#             channel_name, channel_url = line.split(',', 1)
+#             if 'genre' not in channel_url:
+#                 results.append((channel_name, channel_url))
                 
-# 将difang.txt文件地方频道内容写入到hunan.txt
-channel_counters = {}
-with open("hunan.txt", 'w', encoding='utf-8') as file:
-    file.write('湖南频道,#genre#\n')
-    for result in results:
-        channel_name, channel_url = result
-        if '湖南' in channel_name or '长沙' in channel_name or '金鹰' in channel_name or '快乐' in channel_name or '先锋' in channel_name:
-            if channel_name in channel_counters:
-                if channel_counters[channel_name] >= result_counter:
-                    continue
-                else:
-                    file.write(f"{channel_name},{channel_url}\n")
-                    channel_counters[channel_name] += 1
-            else:
-                file.write(f"{channel_name},{channel_url}\n")
-                channel_counters[channel_name] = 1
+# # 将difang.txt文件地方频道内容写入到hunan.txt
+# channel_counters = {}
+# with open("hunan.txt", 'w', encoding='utf-8') as file:
+#     file.write('湖南频道,#genre#\n')
+#     for result in results:
+#         channel_name, channel_url = result
+#         if '湖南' in channel_name or '长沙' in channel_name or '金鹰' in channel_name or '快乐' in channel_name or '先锋' in channel_name:
+#             if channel_name in channel_counters:
+#                 if channel_counters[channel_name] >= result_counter:
+#                     continue
+#                 else:
+#                     file.write(f"{channel_name},{channel_url}\n")
+#                     channel_counters[channel_name] += 1
+#             else:
+#                 file.write(f"{channel_name},{channel_url}\n")
+#                 channel_counters[channel_name] = 1
 
 
 # 线程安全的队列，用于存储下载任务
@@ -412,7 +412,7 @@ with open("iptv.txt", 'r', encoding='utf-8') as file:
         line = line.strip()
         if line:
             channel_name, channel_url = line.split(',')
-            if 'CCTV' not in channel_name and '卫视' not in channel_name and '湖南' not in channel_name and '长沙' not in channel_name:
+            if 'CCTV' not in channel_name and '卫视' not in channel_name:
                 channels.append((channel_name, channel_url))
 
 
@@ -497,7 +497,7 @@ with open("qita.txt", 'w', encoding='utf-8') as file:
     file.write('其他频道,#genre#\n')
     for result in results:
         channel_name, channel_url, speed = result
-        if 'CCTV' not in channel_name and '卫视' not in channel_name and '湖南' not in channel_name and '长沙' not in channel_name:
+        if 'CCTV' not in channel_name and '卫视' not in channel_name:
             if channel_name in channel_counters:
                 if channel_counters[channel_name] >= result_counter:
                     continue
@@ -511,7 +511,7 @@ with open("qita.txt", 'w', encoding='utf-8') as file:
 
 # 合并自定义频道文件内容
 file_contents = []
-file_paths = ["cctv.txt", "weishi.txt", "gangao.txt", "hunan.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
+file_paths = ["cctv.txt", "weishi.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
 for file_path in file_paths:
     with open(file_path, 'r', encoding="utf-8") as file:
         content = file.read()
@@ -529,13 +529,9 @@ with open("iptv_list.txt", "w", encoding="utf-8") as output:
 
 
 os.remove("ipv4.txt")
-os.remove("difang.txt")
 os.remove("iptv.txt")
 os.remove("cctv.txt")
 os.remove("weishi.txt")
-os.remove("gangao.txt")
-os.remove("hunan.txt")
 os.remove("qita.txt")
-
 
 print("任务运行完毕，分类频道列表可查看文件夹内iptv_list.txt文件！")
