@@ -349,22 +349,22 @@ with open("weishi.txt", 'w', encoding='utf-8') as file:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
 
-# # 将IPV4文件内容写入到gangao.txt
-# channel_counters = {}
-# with open("gangao.txt", 'w', encoding='utf-8') as file:
-#     file.write('港澳频道,#genre#\n')
-#     for result in results:
-#         channel_name, channel_url = result
-#         if '凤凰' in channel_name or '翡翠' in channel_name or 'TVB' in channel_name:
-#             if channel_name in channel_counters:
-#                 if channel_counters[channel_name] >= result_counter:
-#                     continue
-#                 else:
-#                     file.write(f"{channel_name},{channel_url}\n")
-#                     channel_counters[channel_name] += 1
-#             else:
-#                 file.write(f"{channel_name},{channel_url}\n")
-#                 channel_counters[channel_name] = 1
+# 将IPV4文件内容写入到gangao.txt
+channel_counters = {}
+with open("gangao.txt", 'w', encoding='utf-8') as file:
+    file.write('港澳频道,#genre#\n')
+    for result in results:
+        channel_name, channel_url = result
+        if '凤凰' in channel_name or '翡翠' in channel_name or 'TVB' in channel_name:
+            if channel_name in channel_counters:
+                if channel_counters[channel_name] >= result_counter:
+                    continue
+                else:
+                    file.write(f"{channel_name},{channel_url}\n")
+                    channel_counters[channel_name] += 1
+            else:
+                file.write(f"{channel_name},{channel_url}\n")
+                channel_counters[channel_name] = 1
 
 
 # # 读取difang.txt文件
@@ -511,7 +511,7 @@ with open("qita.txt", 'w', encoding='utf-8') as file:
 
 # 合并自定义频道文件内容
 file_contents = []
-file_paths = ["cctv.txt", "weishi.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
+file_paths = ["cctv.txt", "weishi.txt", "gangao.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
 for file_path in file_paths:
     with open(file_path, 'r', encoding="utf-8") as file:
         content = file.read()
@@ -533,5 +533,5 @@ os.remove("iptv.txt")
 os.remove("cctv.txt")
 os.remove("weishi.txt")
 os.remove("qita.txt")
-
+os.remove("gangao.txt")
 print("任务运行完毕，分类频道列表可查看文件夹内iptv_list.txt文件！")
