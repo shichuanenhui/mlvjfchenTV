@@ -6,26 +6,23 @@ from selenium.webdriver.chrome.options import Options
 import requests
 import re
 from datetime import datetime
-
 # 获取远程频道源ipv4.txt
 url = 'https://taoiptv.com/source/iptv.txt?token=8zlxhttq9h01ahww'
 r = requests.get(url)
 with open("ipv4.txt", "wb") as code:
     code.write(r.content)
 
-
-
 # # 获取远程湖南地方频道源，并将.m3u文件转换成.txt
-# json_url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Meroser/mgtv/main/mgtv.m3u"
-
+# json_url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/arbaleast/mgtv/main/mgtv.m3u"
+#
 # response = requests.get(json_url)
 # data = response.text
-
+#
 # lines = data.split('\n')
-
+#
 # channel_data = []
 # current_name = ''
-
+#
 # for line in lines:
 #     line = line.strip()
 #     if line.startswith('#EXTINF'):
@@ -34,10 +31,10 @@ with open("ipv4.txt", "wb") as code:
 #     elif line.startswith('http'):
 #         if current_name and line:
 #             channel_data.append(f'{current_name},{line}')
-
+#
 # for item in channel_data:
 #     print(item)
-
+#
 # with open("difang.txt", 'w', encoding='utf-8') as file:
 #     for item in channel_data:
 #         file.write(item + "\n")
@@ -61,25 +58,45 @@ urls = [
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0i5rmW5YyXIg%3D%3D",        # 湖 北
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0i5rmW5Y2XIg%3D%3D",        # 湖 南
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIGNpdHk9ImNoYW5nc2hhIg%3D%3D",        # 长 沙
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hebei%22",         # 河 北
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22beijing%22",       # 北 京
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22guangdong%22",     # 广 东
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shanghai%22",      # 上 海
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22tianjin%22",       # 天 津
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22chongqing%22",     # 重 庆
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shanxi%22",        # 山 西
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shaanxi%22",       # 陕 西
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22liaoning%22",      # 辽 宁
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22jiangsu%22",       # 江 苏
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22zhejiang%22",      # 浙 江
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22anhui%22",         # 安 徽
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22fujian%22",        # 福 建
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22jiangxi%22",       # 江 西
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shandong%22",      # 山 东
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22henan%22",         # 河 南
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hubei%22",         # 湖 北
-    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hunan%22",         # 湖 南
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ibG91ZGki",	    # 娄 底
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iemh1emhvdSI%3D", 	# 株 洲
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ieXVleWFuZyI%3D",	# 岳 阳
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iaGVuZ3lhbmci",	# 衡 阳
+
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hebei%22",     # 河 北
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22beijing%22",   # 北 京
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22guangdong%22", # 广 东
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shanghai%22",  # 上 海
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22tianjin%22",   # 天 津
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22chongqing%22", # 重 庆
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shanxi%22",    # 山 西
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shaanxi%22",   # 陕 西
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22liaoning%22",  # 辽 宁
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22jiangsu%22",   # 江 苏
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22zhejiang%22",  # 浙 江
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22anhui%22",     # 安 徽
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22fujian%22",    # 福 建
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22jiangxi%22",   # 江 西
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22shandong%22",  # 山 东
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22henan%22",     # 河 南
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hubei%22",     # 湖 北
+    "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hunan%22",     # 湖 南
+    "https://www.zoomeye.org/searchResult?q=city:%22changsha%22",	    # 长 沙
+    "https://www.zoomeye.org/searchResult?q=city%3A%22hengyang%22",	    # 衡 阳
+    "https://www.zoomeye.org/searchResult?q=city%3A%22zhuzhou%22",	    # 株 洲
+    "https://www.zoomeye.org/searchResult?q=city%3A%22yueyang%22",	    # 岳 阳
+    "https://www.zoomeye.org/searchResult?q=city%3A%22loudi%22",	    # 娄 底
+    "https://www.zoomeye.org/searchResult?q=city%3A%22chenzhou%22",	    # 郴 州
+    "https://www.zoomeye.org/searchResult?q=city%3A%22xiangtan%22",	    # 湘 潭
+    "https://www.zoomeye.org/searchResult?q=city%3A%22changde%22",	    # 常 德
+    "https://www.zoomeye.org/searchResult?q=city%3A%22yiyang%22",	    # 益 阳
+    "https://www.zoomeye.org/searchResult?q=city%3A%22yongzhou%22",	    # 永 州
+    "https://www.zoomeye.org/searchResult?q=city%3A%22huaihua%22",	    # 怀 化
+    "https://www.zoomeye.org/searchResult?q=city%3A%22xiangxi%22",	    # 湘 西
+    "https://www.zoomeye.org/searchResult?q=city%3A%22shaoyang%22",	    # 邵 阳
+    "https://www.zoomeye.org/searchResult?q=city%3A%22zhangjiajie%22",	# 张家界
 ]
+
 
 def modify_urls(url):
     modified_urls = []
@@ -295,7 +312,7 @@ print("频道列表文件ipv4.txt,difang.txt,iptv.txt获取完成！")
 import os
 import re
 import time
-import datetime
+from datetime import datetime
 import threading
 from queue import Queue
 import requests
@@ -313,7 +330,6 @@ with open("ipv4.txt", 'r', encoding='utf-8') as file:
             channel_name, channel_url = line.split(',')
             if 'genre' not in channel_url:
                 results.append((channel_name, channel_url))
-
 
 # 将IPV4文件内容写入到cctv.txt
 channel_counters = {}
@@ -366,7 +382,6 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
 
-
 # # 读取difang.txt文件
 # results = []
 # result_counter = 2  # 每个频道需要的个数
@@ -378,7 +393,7 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
 #             channel_name, channel_url = line.split(',', 1)
 #             if 'genre' not in channel_url:
 #                 results.append((channel_name, channel_url))
-                
+#
 # # 将difang.txt文件地方频道内容写入到hunan.txt
 # channel_counters = {}
 # with open("hunan.txt", 'w', encoding='utf-8') as file:
@@ -395,7 +410,6 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
 #             else:
 #                 file.write(f"{channel_name},{channel_url}\n")
 #                 channel_counters[channel_name] = 1
-
 
 # 线程安全的队列，用于存储下载任务
 task_queue = Queue()
@@ -497,7 +511,7 @@ with open("qita.txt", 'w', encoding='utf-8') as file:
     file.write('其他频道,#genre#\n')
     for result in results:
         channel_name, channel_url, speed = result
-        if 'CCTV' not in channel_name and '卫视' not in channel_name:
+        if 'CCTV' not in channel_name and '卫视' not in channel_name and '湖南' not in channel_name and '长沙' not in channel_name:
             if channel_name in channel_counters:
                 if channel_counters[channel_name] >= result_counter:
                     continue
@@ -508,10 +522,24 @@ with open("qita.txt", 'w', encoding='utf-8') as file:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
 
-
+with open("hn.txt", 'w', encoding='utf-8') as file:
+    channel_counters = {}
+    file.write('湖南频道,#genre#\n')
+    for result in results:
+        channel_name, channel_url, speed = result
+        if '湖南' in channel_name or '长沙' in channel_name or '金鹰' in channel_name or '先锋乒羽' in channel_name or '快乐垂钓' in channel_name:
+            if channel_name in channel_counters:
+                if channel_counters[channel_name] >= result_counter:
+                    continue
+                else:
+                    file.write(f"{channel_name},{channel_url}\n")
+                    channel_counters[channel_name] += 1
+            else:
+                file.write(f"{channel_name},{channel_url}\n")
+                channel_counters[channel_name] = 1
 # 合并自定义频道文件内容
 file_contents = []
-file_paths = ["cctv.txt", "weishi.txt", "gangao.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
+file_paths = ["cctv.txt", "weishi.txt", "gangao.txt", "hn.txt", "qita.txt", "zdy.txt"]  # 替换为实际的文件路径列表
 for file_path in file_paths:
     with open(file_path, 'r', encoding="utf-8") as file:
         content = file.read()
@@ -520,18 +548,21 @@ for file_path in file_paths:
 # 写入合并后的文件
 with open("iptv_list.txt", "w", encoding="utf-8") as output:
     output.write('\n'.join(file_contents))
-    
+
 # 写入更新日期时间
     now = datetime.now()
     output.write(f"更新时间,#genre#\n")
     output.write(f"{now.strftime("%Y-%m-%d")},url\n")
     output.write(f"{now.strftime("%H:%M:%S")},url\n")
 
-
 os.remove("ipv4.txt")
+# os.remove("difang.txt")
 os.remove("iptv.txt")
 os.remove("cctv.txt")
 os.remove("weishi.txt")
-os.remove("qita.txt")
 os.remove("gangao.txt")
+# os.remove("hunan.txt")
+os.remove("hunan.txt")
+os.remove("qita.txt")
+
 print("任务运行完毕，分类频道列表可查看文件夹内iptv_list.txt文件！")
