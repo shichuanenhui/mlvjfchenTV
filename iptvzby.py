@@ -6,6 +6,9 @@ from selenium.webdriver.chrome.options import Options
 import requests
 import re
 from datetime import datetime
+import threading
+from queue import Queue
+
 # 获取远程频道源ipv4.txt
 url = 'https://taoiptv.com/source/iptv.txt?token=8zlxhttq9h01ahww'
 r = requests.get(url)
@@ -58,10 +61,18 @@ urls = [
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0i5rmW5YyXIg%3D%3D",        # 湖 北
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIHJlZ2lvbj0i5rmW5Y2XIg%3D%3D",        # 湖 南
     "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY291bnRyeT0iQ04iICYmIGNpdHk9ImNoYW5nc2hhIg%3D%3D",        # 长 沙
-    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ibG91ZGki",	    # 娄 底
-    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iemh1emhvdSI%3D", 	# 株 洲
-    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ieXVleWFuZyI%3D",	# 岳 阳
-    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iaGVuZ3lhbmci",	# 衡 阳
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ibG91ZGki",	        # 娄 底
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iemh1emhvdSI%3D", 	    # 株 洲
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ieXVleWFuZyI%3D",	    # 岳 阳
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iaGVuZ3lhbmci",	    # 衡 阳
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iY2hlbnpob3Ui",        # 郴 州
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ieGlhbmd0YW4i",        # 湘 潭
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iY2hhbmdkZSI%3D",      # 常 德
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ieWl5YW5nIg%3D%3D",    # 益 阳
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ieW9uZ3pob3Ui",        # 永 州
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iaHVhaWh1YSI%3D",      # 怀 化
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0ic2hhb3lhbmci",        # 邵 阳
+    "https://fofa.info/result?qbase64=ImlwdHYvbGl2ZS96aF9jbi5qcyIgJiYgY2l0eT0iemhhbmdqaWFqaWUi",    # 张家界
 
     "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22hebei%22",     # 河 北
     "https://www.zoomeye.org/searchResult?q=%2Fiptv%2Flive%2Fzh_cn.js%20%2Bcountry%3A%22CN%22%20%2Bsubdivisions%3A%22beijing%22",   # 北 京
@@ -309,13 +320,7 @@ with open("iptv.txt", 'w', encoding='utf-8') as file:
 
 print("频道列表文件ipv4.txt,difang.txt,iptv.txt获取完成！")
 
-import os
-import re
-import time
-from datetime import datetime
-import threading
-from queue import Queue
-import requests
+
 import eventlet
 eventlet.monkey_patch()
 
@@ -382,34 +387,6 @@ with open("gangao.txt", 'w', encoding='utf-8') as file:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
 
-# # 读取difang.txt文件
-# results = []
-# result_counter = 2  # 每个频道需要的个数
-# with open("difang.txt", 'r', encoding='utf-8') as file:
-#     lines = file.readlines()
-#     for line in lines:
-#         line = line.strip()
-#         if line:
-#             channel_name, channel_url = line.split(',', 1)
-#             if 'genre' not in channel_url:
-#                 results.append((channel_name, channel_url))
-#
-# # 将difang.txt文件地方频道内容写入到hunan.txt
-# channel_counters = {}
-# with open("hunan.txt", 'w', encoding='utf-8') as file:
-#     file.write('湖南频道,#genre#\n')
-#     for result in results:
-#         channel_name, channel_url = result
-#         if '湖南' in channel_name or '长沙' in channel_name or '金鹰' in channel_name or '快乐' in channel_name or '先锋' in channel_name:
-#             if channel_name in channel_counters:
-#                 if channel_counters[channel_name] >= result_counter:
-#                     continue
-#                 else:
-#                     file.write(f"{channel_name},{channel_url}\n")
-#                     channel_counters[channel_name] += 1
-#             else:
-#                 file.write(f"{channel_name},{channel_url}\n")
-#                 channel_counters[channel_name] = 1
 
 # 线程安全的队列，用于存储下载任务
 task_queue = Queue()
@@ -556,13 +533,11 @@ with open("iptv_list.txt", "w", encoding="utf-8") as output:
     output.write(f"{now.strftime("%H:%M:%S")},url\n")
 
 os.remove("ipv4.txt")
-# os.remove("difang.txt")
 os.remove("iptv.txt")
 os.remove("cctv.txt")
 os.remove("weishi.txt")
 os.remove("gangao.txt")
-# os.remove("hunan.txt")
-os.remove("hunan.txt")
+os.remove("hn.txt")
 os.remove("qita.txt")
 
 print("任务运行完毕，分类频道列表可查看文件夹内iptv_list.txt文件！")
