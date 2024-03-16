@@ -318,7 +318,7 @@ with open("iptv.txt", 'w', encoding='utf-8') as file:
         file.write(result + "\n")
         print(result)
 
-print("频道列表文件ipv4.txt,difang.txt,iptv.txt获取完成！")
+print("频道列表文件ipv4.txt,iptv.txt获取完成！")
 
 
 import eventlet
