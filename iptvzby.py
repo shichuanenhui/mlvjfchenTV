@@ -326,7 +326,7 @@ eventlet.monkey_patch()
 
 # 读取IPTV4.txt文件
 results = []
-result_counter = 20  # 每个频道需要的个数
+result_counter = 10  # 每个频道需要的个数
 with open("ipv4.txt", 'r', encoding='utf-8') as file:
     lines = file.readlines()
     for line in lines:
@@ -516,7 +516,7 @@ with open("hn.txt", 'w', encoding='utf-8') as file:
                 channel_counters[channel_name] = 1
 # 合并自定义频道文件内容
 file_contents = []
-file_paths = ["YD-IPTV.txt", "cctv.txt", "weishi.txt", "gangao.txt", "hn.txt", "zdy.txt"]  # 替换为实际的文件路径列表
+file_paths = ["YD-IPTV.txt", "cctv.txt", "weishi.txt", "gangao.txt", "hn.txt"]  # 替换为实际的文件路径列表
 for file_path in file_paths:
     with open(file_path, 'r', encoding="utf-8") as file:
         content = file.read()
