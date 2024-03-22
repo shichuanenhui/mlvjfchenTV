@@ -15,6 +15,41 @@ r = requests.get(url)
 with open("ipv4.txt", "wb") as code:
     code.write(r.content)
 
+#  获取远程港澳台直播源文件
+url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/Fairy8o/IPTV/main/DIYP-v4.txt"
+r = requests.get(url)
+open('DIYP-v4.txt', 'wb').write(r.content)
+
+keywords = ['凤凰卫视', '凤凰资讯', 'TVB翡翠', 'TVB明珠', 'TVB星河', 'J2', '无线', '有线', '天映', 'VIU', 'RTHK', 'HOY',
+            '香港卫视']  # 需要提取的关键字列表
+pattern = '|'.join(keywords)  # 创建正则表达式模式，匹配任意一个关键字
+with open('DIYP-v4.txt', 'r', encoding='utf-8') as file, open('HK.txt', 'w', encoding='utf-8') as HK:
+    HK.write('\n港澳频道,#genre#\n')
+    for line in file:
+        if re.search(pattern, line):  # 如果行中有任意关键字
+            HK.write(line)  # 将该行写入输出文件
+
+keywords = ['民视', '中视', '台视', '华视', '新闻台', '东森', '龙祥', '公视', '三立', '大爱', '年代', '人间卫视',
+            '人間', '大立']  # 需要提取的关键字列表
+pattern = '|'.join(keywords)  # 创建正则表达式模式，匹配任意一个关键字
+with open('DIYP-v4.txt', 'r', encoding='utf-8') as file, open('TW.txt', 'w', encoding='utf-8') as TW:
+    TW.write('\n台湾频道,#genre#\n')
+    for line in file:
+        if re.search(pattern, line):  # 如果行中有任意关键字
+            TW.write(line)  # 将该行写入输出文件
+
+# 读取要合并的香港频道和台湾频道文件
+file_contents = []
+file_paths = ["HK.txt", "TW.txt"]  # 替换为实际的文件路径列表
+for file_path in file_paths:
+    with open(file_path, 'r', encoding="utf-8") as file:
+        content = file.read()
+        file_contents.append(content)
+# 生成合并后的文件
+with open("GAT.txt", "w", encoding="utf-8") as output:
+    output.write('\n'.join(file_contents))
+
+
 # # 获取远程湖南地方频道源，并将.m3u文件转换成.txt
 # json_url = "https://mirror.ghproxy.com/https://raw.githubusercontent.com/arbaleast/mgtv/main/mgtv.m3u"
 #
@@ -359,7 +394,7 @@ with open("weishi.txt", 'w', encoding='utf-8') as file:
     file.write('卫视频道,#genre#\n')
     for result in results:
         channel_name, channel_url = result
-        if '卫视' in channel_name:
+        if '卫视' in channel_name or '凤凰' in channel_name or '翡翠' in channel_name or 'TVB' in channel_name:
             if channel_name in channel_counters:
                 if channel_counters[channel_name] >= result_counter:
                     continue
@@ -369,24 +404,6 @@ with open("weishi.txt", 'w', encoding='utf-8') as file:
             else:
                 file.write(f"{channel_name},{channel_url}\n")
                 channel_counters[channel_name] = 1
-
-# 将IPV4文件内容写入到gangao.txt
-channel_counters = {}
-with open("gangao.txt", 'w', encoding='utf-8') as file:
-    file.write('港澳频道,#genre#\n')
-    for result in results:
-        channel_name, channel_url = result
-        if '凤凰' in channel_name or '翡翠' in channel_name or 'TVB' in channel_name:
-            if channel_name in channel_counters:
-                if channel_counters[channel_name] >= result_counter:
-                    continue
-                else:
-                    file.write(f"{channel_name},{channel_url}\n")
-                    channel_counters[channel_name] += 1
-            else:
-                file.write(f"{channel_name},{channel_url}\n")
-                channel_counters[channel_name] = 1
-
 
 # 线程安全的队列，用于存储下载任务
 task_queue = Queue()
@@ -480,26 +497,38 @@ def channel_key(channel_name):
 
 # 对频道进行排序
 results.sort(key=lambda x: (x[0], -float(x[2].split()[0])))
-# results.sort(key=lambda x: channel_key(x[0]))
+results.sort(key=lambda x: channel_key(x[0]))
 result_counter = 10  # 每个频道需要的个数
 
-# with open("qita.txt", 'w', encoding='utf-8') as file:
-#     channel_counters = {}
-#     file.write('其他频道,#genre#\n')
-#     for result in results:
-#         channel_name, channel_url, speed = result
-#         if 'CCTV' not in channel_name and '卫视' not in channel_name and '湖南' not in channel_name and '长沙' not in channel_name:
-#             if channel_name in channel_counters:
-#                 if channel_counters[channel_name] >= result_counter:
-#                     continue
-#                 else:
-#                     file.write(f"{channel_name},{channel_url}\n")
-#                     channel_counters[channel_name] += 1
-#             else:
-#                 file.write(f"{channel_name},{channel_url}\n")
-#                 channel_counters[channel_name] = 1
-
 with open("hn.txt", 'w', encoding='utf-8') as file:
+    # channel_counters = {}
+    # file.write('央视频道,#genre#\n')
+    # for result in results:
+    #     channel_name, channel_url, speed = result
+    #     if 'CCTV' in channel_name:
+    #         if channel_name in channel_counters:
+    #             if channel_counters[channel_name] >= result_counter:
+    #                 continue
+    #             else:
+    #                 file.write(f"{channel_name},{channel_url}\n")
+    #                 channel_counters[channel_name] += 1
+    #         else:
+    #             file.write(f"{channel_name},{channel_url}\n")
+    #             channel_counters[channel_name] = 1
+    # channel_counters = {}
+    # file.write('卫视频道,#genre#\n')
+    # for result in results:
+    #     channel_name, channel_url, speed = result
+    #     if '卫视' in channel_name:
+    #         if channel_name in channel_counters:
+    #             if channel_counters[channel_name] >= result_counter:
+    #                 continue
+    #             else:
+    #                 file.write(f"{channel_name},{channel_url}\n")
+    #                 channel_counters[channel_name] += 1
+    #         else:
+    #             file.write(f"{channel_name},{channel_url}\n")
+    #             channel_counters[channel_name] = 1
     channel_counters = {}
     file.write('湖南频道,#genre#\n')
     for result in results:
@@ -516,7 +545,7 @@ with open("hn.txt", 'w', encoding='utf-8') as file:
                 channel_counters[channel_name] = 1
 # 合并自定义频道文件内容
 file_contents = []
-file_paths = ["YD-IPTV.txt", "cctv.txt", "weishi.txt", "gangao.txt", "hn.txt"]  # 替换为实际的文件路径列表
+file_paths = ["YD-IPTV.txt", "cctv.txt", "weishi.txt", "hn.txt", "GAT.txt", "zdy.txt"]  # 替换为实际的文件路径列表
 for file_path in file_paths:
     with open(file_path, 'r', encoding="utf-8") as file:
         content = file.read()
@@ -536,8 +565,9 @@ os.remove("ipv4.txt")
 os.remove("iptv.txt")
 os.remove("cctv.txt")
 os.remove("weishi.txt")
-os.remove("gangao.txt")
+os.remove("GAT.txt")
 os.remove("hn.txt")
-# os.remove("qita.txt")
-
+os.remove("DIYP-v4.txt")
+os.remove("HK.txt")
+os.remove("TW.txt")
 print("任务运行完毕，分类频道列表可查看文件夹内iptv_list.txt文件！")
